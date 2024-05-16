@@ -2,10 +2,16 @@ import PageWrapper from "@/components/PageWrapper"
 import { MovieAPI, SearchResponse } from "../api/api"
 import TextInput from "@/components/TextInput"
 import MoviesGrid from "@/components/MoviesGrid"
-// import Image from 'next/image'
 
-export default async function Home() {
-  const data = await getData()
+interface HomeProps {
+  searchParams?: { search?: string; page?: string }
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const searchQuery = searchParams?.search || ""
+  const page = searchParams?.page || "1"
+  const data = await getData(searchQuery, page)
+
   const { searchResults, totalResults } = data
   return (
     <>
@@ -15,30 +21,18 @@ export default async function Home() {
         <div className="mb-10 md:w-1/4">
           <TextInput />
         </div>
-        <MoviesGrid movies={searchResults} totalResults={totalResults} />
+        <h6 className="mb-4 text-white">{totalResults} Results</h6>
+        {totalResults > 0 ? (
+          <MoviesGrid movies={searchResults} />
+        ) : (
+          <h5>No results found with </h5>
+        )}
       </PageWrapper>
     </>
   )
 }
 
-async function getData(): Promise<SearchResponse> {
-  try {
-    const search = await MovieAPI.getMovies("lord of the rings")
-    if (search.error) {
-      throw new Error("Error searching movies")
-    }
-
-    const { searchResults, totalResults } = search
-
-    return {
-      searchResults: searchResults,
-      totalResults: totalResults,
-    }
-  } catch (err) {
-    console.error(err)
-    return {
-      searchResults: [],
-      totalResults: 0,
-    }
-  }
+async function getData(searchQuery: string, page: string) {
+  const data = await MovieAPI.getMovies(searchQuery, +page)
+  return data
 }

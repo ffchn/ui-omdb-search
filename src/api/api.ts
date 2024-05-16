@@ -1,17 +1,8 @@
-import axios from "axios"
 import Movie from "@/interfaces/movie"
 
 const omdbBaseURL = process.env.OMDB_API_URL
-const omdbApiKey = process.env.OMDB_API_KEY
+const omdbApiKey: string = process.env.OMDB_API_KEY || ""
 const omdbUserID = process.env.OMDB_USER_ID
-
-const api = axios.create({
-  baseURL: omdbBaseURL,
-  params: {
-    apikey: omdbApiKey,
-    i: omdbUserID,
-  },
-})
 
 export interface SearchResponse {
   totalResults: number
@@ -20,32 +11,28 @@ export interface SearchResponse {
 }
 
 export const MovieAPI = {
-  //todo: fix this type
-  async getMovies(searchQuery: string = ""): Promise<SearchResponse> {
-    try {
-      console.log(omdbApiKey, omdbUserID)
-      const { data } = await api.get("/", {
-        params: {
-          s: searchQuery,
-          type: "movie",
-        },
-      })
+  async getMovies(
+    searchQuery: string,
+    page: number = 1
+  ): Promise<SearchResponse> {
+    const searchParams = new URLSearchParams({
+      apikey: omdbApiKey,
+      s: searchQuery,
+      page: page.toString(),
+    })
 
-      if (data.Response !== "True") {
-        throw new Error("Could not retrieve search results")
-      }
+    const res = await fetch(`${omdbBaseURL}?${searchParams}`, {
+      cache: "force-cache",
+    })
 
-      return {
-        totalResults: data.totalResults,
-        searchResults: data.Search,
-      }
-    } catch (error) {
-      console.error(error)
-      return {
-        totalResults: 0,
-        searchResults: [],
-        error: `Coudln't Retrieve movies from api. Error: ${error}`,
-      }
+    if (!res.ok) {
+      throw new Error("Failed to fetch data")
+    }
+    const data = await res.json()
+
+    return {
+      totalResults: data.totalResults,
+      searchResults: data.Search,
     }
   },
 }
