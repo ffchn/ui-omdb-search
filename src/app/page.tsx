@@ -22,18 +22,20 @@ export default async function Home({ searchParams }: HomeProps) {
         <div className="mb-10 md:w-1/4">
           <TextInput />
         </div>
-        <h6 className="mb-4 text-white">{totalResults} Results</h6>
         {totalResults > 0 ? (
           <>
+            <h6 className="mb-4 text-white">{totalResults} Results</h6>
             <MoviesGrid movies={searchResults} pages={pages} />
           </>
         ) : (
-          <h5>
-            No results found with search{" "}
-            <span className="text-primary font-bold">
-              &quot;{searchQuery}&quot;
-            </span>
-          </h5>
+          searchQuery && (
+            <h5>
+              No results found with search{" "}
+              <span className="text-primary font-bold">
+                &quot;{searchQuery}&quot;
+              </span>
+            </h5>
+          )
         )}
       </PageWrapper>
     </>
