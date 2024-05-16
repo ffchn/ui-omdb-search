@@ -12,7 +12,6 @@ export default function TextInput() {
 
   //todo: fix 'any' type, debounce doesnt receive a proper form event
   const handleInputChange = debounce((e: any) => {
-    console.log(e)
     const value = e.target.value.trim()
     if (value.length > 2) {
       params.set("search", value)
@@ -20,6 +19,7 @@ export default function TextInput() {
     } else {
       params.delete("search")
     }
+    params.delete("page")
   }, 500)
 
   return (

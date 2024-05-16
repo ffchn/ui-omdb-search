@@ -1,5 +1,5 @@
 import PageWrapper from "@/components/PageWrapper"
-import { MovieAPI, SearchResponse } from "../api/api"
+import MovieAPI from "../services/api"
 import TextInput from "@/components/TextInput"
 import MoviesGrid from "@/components/MoviesGrid"
 
@@ -13,8 +13,7 @@ export default async function Home({ searchParams }: HomeProps) {
   const data = await getData(searchQuery, page)
 
   const { searchResults, totalResults } = data
-  const pages = totalResults > 0 ? Math.ceil(totalResults / 6) : 0
-  console.log(pages)
+  const pages = totalResults > 0 ? Math.ceil(totalResults / 10) : 0
   return (
     <>
       <PageWrapper>
@@ -25,9 +24,16 @@ export default async function Home({ searchParams }: HomeProps) {
         </div>
         <h6 className="mb-4 text-white">{totalResults} Results</h6>
         {totalResults > 0 ? (
-          <MoviesGrid movies={searchResults} />
+          <>
+            <MoviesGrid movies={searchResults} pages={pages} />
+          </>
         ) : (
-          <h5>No results found with </h5>
+          <h5>
+            No results found with search{" "}
+            <span className="text-primary font-bold">
+              &quot;{searchQuery}&quot;
+            </span>
+          </h5>
         )}
       </PageWrapper>
     </>

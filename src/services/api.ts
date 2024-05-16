@@ -1,7 +1,7 @@
 import Movie from "@/interfaces/movie"
 
-const omdbBaseURL = process.env.OMDB_API_URL
-const omdbApiKey: string = process.env.OMDB_API_KEY || ""
+const omdbBaseURL = process.env.NEXT_PUBLIC_OMDB_API_URL
+const omdbApiKey: string = process.env.NEXT_PUBLIC_OMDB_API_KEY || ""
 
 export interface SearchResponse {
   totalResults: number
@@ -9,7 +9,7 @@ export interface SearchResponse {
   error?: string
 }
 
-export const MovieAPI = {
+const MovieAPI = {
   async getMovies(
     searchQuery: string,
     page: number = 1
@@ -35,3 +35,5 @@ export const MovieAPI = {
     }
   },
 }
+
+export default MovieAPI
