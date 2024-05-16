@@ -2,7 +2,6 @@ import Movie from "@/interfaces/movie"
 
 const omdbBaseURL = process.env.OMDB_API_URL
 const omdbApiKey: string = process.env.OMDB_API_KEY || ""
-const omdbUserID = process.env.OMDB_USER_ID
 
 export interface SearchResponse {
   totalResults: number
@@ -22,7 +21,7 @@ export const MovieAPI = {
     })
 
     const res = await fetch(`${omdbBaseURL}?${searchParams}`, {
-      cache: "force-cache",
+      next: { revalidate: 3600 }, //caches data and revalidates every hour
     })
 
     if (!res.ok) {

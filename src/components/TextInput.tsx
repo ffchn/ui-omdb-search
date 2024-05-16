@@ -1,7 +1,6 @@
 "use client"
 
-import { FormEvent, useCallback } from "react"
-
+import { debounce } from "lodash"
 import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
 
@@ -11,16 +10,17 @@ export default function TextInput() {
   const pathname = usePathname()
   const { replace } = useRouter()
 
-  function handleInputChange(e: FormEvent<HTMLInputElement>) {
-    const value = e.currentTarget.value
-
+  //todo: fix 'any' type, debounce doesnt receive a proper form event
+  const handleInputChange = debounce((e: any) => {
+    console.log(e)
+    const value = e.target.value.trim()
     if (value.length > 2) {
-      params.set("search", e.currentTarget.value.trim())
+      params.set("search", value)
       replace(`${pathname}?${params.toString()}`)
     } else {
       params.delete("search")
     }
-  }
+  }, 500)
 
   return (
     <label className="input input-bordered input-primary flex items-center gap-2">
@@ -28,8 +28,8 @@ export default function TextInput() {
         type="text"
         className="grow"
         placeholder="Search"
-        onChange={handleInputChange}
         defaultValue={searchParams.get("search") || ""}
+        onChange={(e) => handleInputChange(e)}
       />
       <MagnifyingGlass
         size={24}

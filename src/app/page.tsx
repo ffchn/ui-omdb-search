@@ -9,10 +9,12 @@ interface HomeProps {
 
 export default async function Home({ searchParams }: HomeProps) {
   const searchQuery = searchParams?.search || ""
-  const page = searchParams?.page || "1"
+  const page = Number(searchParams?.page || "1")
   const data = await getData(searchQuery, page)
 
   const { searchResults, totalResults } = data
+  const pages = totalResults > 0 ? Math.ceil(totalResults / 6) : 0
+  console.log(pages)
   return (
     <>
       <PageWrapper>
@@ -32,7 +34,7 @@ export default async function Home({ searchParams }: HomeProps) {
   )
 }
 
-async function getData(searchQuery: string, page: string) {
-  const data = await MovieAPI.getMovies(searchQuery, +page)
+async function getData(searchQuery: string, page: number) {
+  const data = await MovieAPI.getMovies(searchQuery, page)
   return data
 }
