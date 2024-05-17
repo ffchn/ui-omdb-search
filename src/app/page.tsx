@@ -24,12 +24,14 @@ export default async function Home({ searchParams }: HomeProps) {
         </div>
         {totalResults > 0 ? (
           <>
-            <h6 className="mb-4 text-white">{totalResults} Results</h6>
+            <h6 data-test="heading-result-count" className="mb-4 text-white">
+              {totalResults} Results
+            </h6>
             <MoviesGrid movies={searchResults} pages={pages} />
           </>
         ) : (
           searchQuery && (
-            <h5>
+            <h5 data-test="heading-no-results">
               No results found with search{" "}
               <span className="text-primary font-bold">
                 &quot;{searchQuery}&quot;

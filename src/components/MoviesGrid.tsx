@@ -44,12 +44,15 @@ export default function MoviesGrid({ movies, pages }: MoviesGridProps) {
   return (
     <div className="flex flex-col items-center w-full">
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-4 mb-10">
-        {movieList.map((movie) => (
-          <MovieCard key={movie.imdbID} movieData={movie} />
+        {movieList.map((movie, index) => (
+          <div key={movie.imdbID} data-test={`movie-card-${index + 1}`}>
+            <MovieCard movieData={movie} />
+          </div>
         ))}
       </div>
       {hasMoreMovies && (
         <button
+          data-test="button-load-more"
           className="btn btn-primary text-white min-w-[200px]"
           onClick={fetchMoreMovies}
         >

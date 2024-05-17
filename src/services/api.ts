@@ -18,6 +18,7 @@ const MovieAPI = {
       apikey: omdbApiKey,
       s: searchQuery,
       page: page.toString(),
+      type: "movie",
     })
 
     const res = await fetch(`${omdbBaseURL}?${searchParams}`, {
