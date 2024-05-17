@@ -15,8 +15,8 @@ This project is a web interface that allows users to search for movies using the
 First, clone the repository:
 
 ```bash
-git  clone  https://github.com/yourusername/moviesearch-interface.git
-cd  moviesearch-interface
+git clone https://github.com/ffchn/ui-omdb-search.git
+cd ui-omdb-search
 ```
 
 Install the dependencies:
@@ -40,7 +40,7 @@ NEXT_PUBLIC_OMDB_API_KEY=<your_api_key>
 To start the development server, run:
 
 ```bash
-npm  run  dev
+npm run dev
 ```
 
 Open http://localhost:3000 with your browser to see the result.
@@ -50,7 +50,7 @@ Open http://localhost:3000 with your browser to see the result.
 End-to-end testing is done using Cypress. To run the tests, use the following command:
 
 ```bash
-npm  run  cypress:open
+npm run cypress:open
 ```
 
 ## Technologies Used
