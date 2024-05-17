@@ -55,6 +55,7 @@ npm  run  cypress:open
 
 ## Technologies Used
 
+- [Typescript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/) for the React framework
 - [OMDB API](http://www.omdbapi.com/) for movie data
 - [TailwindCSS](https://tailwindcss.com/) for utility-first CSS framework
