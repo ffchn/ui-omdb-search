@@ -24,16 +24,13 @@ export default function TextInput() {
 
   return (
     <label className="input input-bordered input-primary flex items-center gap-2">
+      <MagnifyingGlass size={24} />
       <input
         type="text"
         className="grow"
         placeholder="Search"
         defaultValue={searchParams.get("search") || ""}
         onChange={(e) => handleInputChange(e)}
-      />
-      <MagnifyingGlass
-        size={24}
-        className="cursor-pointer hover:text-primary duration-500"
       />
     </label>
   )

@@ -15,16 +15,24 @@ export default function MoviesGrid({ movies, pages }: MoviesGridProps) {
   const searchParams = useSearchParams()
   const search = searchParams.get("search") || ""
   const page = searchParams.get("page") || "1"
+  const [isLoading, setLoading] = useState<boolean>(false)
   const [movieList, setMovieList] = useState<Movie[]>(movies)
   const [currentPage, setCurrentPage] = useState<number>(Number(page))
 
   async function fetchMoreMovies() {
-    const data = await MovieAPI.getMovies(search, currentPage + 1)
-    if (!data) {
-      throw new Error("Error fetching movies")
+    try {
+      setLoading(true)
+      const data = await MovieAPI.getMovies(search, currentPage + 1)
+      if (!data) {
+        throw new Error("Error fetching movies")
+      }
+      setCurrentPage(currentPage + 1)
+      setMovieList((state) => [...state, ...data.searchResults])
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
     }
-    setCurrentPage(currentPage + 1)
-    setMovieList((state) => [...state, ...data.searchResults])
   }
 
   useEffect(() => {
@@ -42,10 +50,14 @@ export default function MoviesGrid({ movies, pages }: MoviesGridProps) {
       </div>
       {hasMoreMovies && (
         <button
-          className="btn btn-primary text-white"
+          className="btn btn-primary text-white min-w-[200px]"
           onClick={fetchMoreMovies}
         >
-          Load More
+          {isLoading ? (
+            <span className="loading loading-spinner" />
+          ) : (
+            "Load more"
+          )}
         </button>
       )}
     </div>
